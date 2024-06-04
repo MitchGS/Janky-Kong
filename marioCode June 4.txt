@@ -1,0 +1,85 @@
+import greenfoot.*;
+public class Mario extends Actor
+{
+    int yspeed;
+    String Marioimage = "mariopixelCopy.png";
+    long lastTime;
+    int Lives = 3;
+    public void act() 
+    {
+        yspeed +=1;
+        //Updates y position
+        setLocation( getX(), getY() + yspeed);
+        getWorld().showText("Lives : "+ Lives +"",1450, 50);
+        if(isTouching(Barrel.class))
+        {
+            removeTouching(Barrel.class);
+            Lives -=1;
+        }
+        if(Lives == 0)
+        {
+            getWorld().showText("GAME OVER", 750, 600);
+            Greenfoot.stop();
+        }
+        if(yspeed > 0)
+        {
+            while(isTouching(Floor.class))
+            {
+                yspeed = 0;
+                setLocation(getX(), getY() - 1);
+                if(Greenfoot.isKeyDown("up")||Greenfoot.isKeyDown("w"))
+                {
+                    yspeed = - 27;
+                }
+            }
+        }
+        if(yspeed <= 0)
+        {
+            while(isTouching(Floor.class))
+            {
+                yspeed = 0;
+                setLocation(getX(), getY() + 1);
+            }
+        }    
+        if(Greenfoot.isKeyDown("left")||Greenfoot.isKeyDown("a"))
+        {
+            move(-5);
+            /*if(System.currentTimeMillis() - lastTime > 500 && Marioimage.equals("mariopixelCopy.png"))
+            {
+                Marioimage = "marioleft.png";
+                setImage("marioleft.png");
+                lastTime = System.currentTimeMillis();
+            } else {
+                if(System.currentTimeMillis() - lastTime > 500)
+                {
+                    Marioimage = "mariopixelCopy.png";
+                    setImage("mariopixelCopy.png");
+                    lastTime = System.currentTimeMillis();
+                }
+            } */
+            
+           
+            setImage("mariopixelCopy.png");
+            while(isTouching(Floor.class))
+            {
+               move(1);
+            } 
+        } else {
+            if(Greenfoot.isKeyDown("right")||Greenfoot.isKeyDown("d"))
+            {
+               move(5);
+               setImage("mariopixel.png");
+                while(isTouching(Floor.class))
+                {
+                  move(-1);
+               }
+            } else{
+                setImage("mario-big.png");
+            }
+        }
+        if(Greenfoot.isKeyDown("down")||Greenfoot.isKeyDown("s"))
+        {
+            yspeed = 50;
+        }
+    } 
+}
