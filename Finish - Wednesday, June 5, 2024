@@ -1,0 +1,37 @@
+import greenfoot.*;
+
+/**
+ * Write a description of class Finish here.
+ * 
+ * @author (your name) 
+ * @version (a version number or a date)
+ */
+public class Finish extends World
+{
+    /**
+     * Constructor for objects of class Finish.
+     * 
+     */
+    public Finish()
+    {    
+        // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
+        super(1500, 1000, 1); 
+
+        // Use a loop to add Floor2 objects at intervals of 250 pixels along the x-axis
+        for (int x = 125; x <= 1375; x += 250) {
+            addObject(new Floor2(), x, 1000);
+        }
+
+        // Add a Princess object at position (145, 940)
+        addObject(new Princess(), 722, 940);
+
+        // Add a Mario object at position (85, 940)
+        addObject(new Mario(), 795, 940);
+        
+        // Add a Heart object at position (747, 838)
+        addObject(new Heart(), 747, 838);
+
+        // Display the text "YOU WIN" at position (750, 600)
+        showText("YOU WIN", 750, 600);
+    }
+}
