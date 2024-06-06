@@ -1,0 +1,71 @@
+import greenfoot.*;
+
+/**
+ * Write a description of class Barrel here.
+ * 
+ * @author (your name) 
+ * @version (a version number or a date)
+ */
+// changes made: checks if the barrel is touching either the "Floor2"
+// or "Floor" class objects using the "isTouching" method. If it is touching
+//either floor, it changes the barrel's image to the default image and sets 
+//the "isBetweenFloors" variable to true. Otherwise, if the barrel is
+//not touching any floor, it sets the image to the alternate image and 
+//sets "isBetweenFloors" to false.
+public class Barrel extends Actor
+{
+    private GreenfootImage defaultImage;
+    private GreenfootImage alternateImage;
+    private boolean isBetweenFloors;
+
+    public Barrel()
+    {
+        alternateImage = new GreenfootImage("Donkey_Kong_Classic_NES_Artwork.jpg");
+        defaultImage = new GreenfootImage("Donkey_Kong_Classic_NES_Artwork21cardioawyeahproduction1738imlikeheywhatsuphello.png");
+        setImage(defaultImage);
+        isBetweenFloors = false;
+    }
+
+public void act() 
+{
+    setLocation( getX(), getY() +BackGround1.backgroundY);  
+    if (isAtEdge())
+    {
+        getWorld().removeObject(this);
+    } 
+    else
+    {
+        setLocation(getX(), getY() + 3);
+        boolean touchingFloor2 = isTouching(Floor2.class);
+        boolean touchingFloor = isTouching(Floor.class);
+        
+        if (touchingFloor2 || touchingFloor)
+        {
+            if (!isBetweenFloors)
+            {
+                setImage(defaultImage);
+                isBetweenFloors = true;
+            }
+        }
+        else
+        {
+            if (isBetweenFloors)
+            {
+                setImage(alternateImage);
+                isBetweenFloors = false;
+            }
+        }
+        
+        if (touchingFloor2)
+        {
+            setLocation(getX() - 3, getY() - 3);
+            turn(-8);
+        }
+        else if (touchingFloor)
+        {
+            setLocation(getX() + 3, getY() - 3);
+            turn(8);
+        }
+    }
+}
+}
