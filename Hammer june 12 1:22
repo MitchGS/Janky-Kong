@@ -1,0 +1,58 @@
+import greenfoot.*;
+
+public class Hammer extends Actor {
+    private int rotationSpeed = 5;
+    private int rotationDirection = 1;
+    private boolean isActive = false;
+    private int activeTime = 0;
+    private int maxActiveTime = 200;
+    
+    public Hammer() {
+        GreenfootImage image = new GreenfootImage("hammer.png");
+        setImage(image);
+    }
+    
+    public void act() {
+        if (isActive) {
+            handleActive();
+        } else {
+            handleInactive();
+        }
+        
+        handleRotation();
+    }
+    
+    private void handleActive() {
+        activeTime++;
+        if (activeTime >= maxActiveTime) {
+            isActive = false;
+            activeTime = 0;
+        }
+        
+
+        if (isTouching(Barrel.class)) {
+            removeTouching(Barrel.class);
+        }
+    }
+    
+    private void handleInactive() {
+        
+        if (getY() >= getWorld().getHeight()) {
+            getWorld().removeObject(this);
+        }
+        
+        if (isTouching(Mario.class) && Greenfoot.isKeyDown("space")) {
+            isActive = true;
+        }
+    }
+    
+private void handleRotation() {
+    if (isActive) {
+        setRotation(getRotation() + (rotationSpeed * rotationDirection));
+
+        if (getRotation() >= 30 || getRotation() <= -30) {
+            rotationDirection *= -1;
+        }
+    }
+}
+}
