@@ -1,0 +1,59 @@
+import greenfoot.*;
+
+/**
+ * BackGround1 is a class that extends World. It represents the game world.
+ * 
+ * @author (your name) 
+ * @version (a version number or a date)
+ */
+public class BackGround1 extends World
+{
+    public static int backgroundYSpeed = 0;
+    public static int backgroundXSpeed = 0;
+    public static int backgroundXPos = 0;
+    
+    /**
+     * Constructor for objects of class BackGround1.
+     * 
+     */
+    public BackGround1()
+    {    
+        // Create a new world with 1500x1000 cells with a cell size of 1 pixel
+        super(1500, 1000, 1); 
+
+        // Add a new DK object at position (200, 150)
+        addObject(new DK(), 200, 150);
+        
+        addObject(new Ladder(), 634, 886);
+
+        // Define the y-coordinates for the first type of floor
+        int[] floor1Y = {219, 781};
+
+        // Define the y-coordinates for the second type of floor
+        int[] floor2Y = {500, 989};
+
+        // Loop over the y-coordinates for the first type of floor
+        for (int y : floor1Y) {
+            // For each y-coordinate, add Floor objects at intervals of 250 pixels along the x-axis
+            for (int x = 125; x <= 875; x += 250) {
+                addObject(new Floor(), x, y);
+            }
+        }
+
+        // Loop over the y-coordinates for the second type of floor
+        for (int y : floor2Y) {
+            // For each y-coordinate, add Floor2 objects at intervals of 250 pixels along the x-axis
+            for (int x = 625; x <= 1375; x += 250) {
+                addObject(new Floor2(), x, y);
+            }
+        }
+
+ //        Add a floor under Mario's spawn point - this part probably has room for improvement
+        addObject(new Floor2(), 125, 989);
+        addObject(new Floor2(), 250, 989);
+        addObject(new Floor2(), 375, 989);
+
+        // Add a Mario object at position (125, 940)
+        addObject(new Mario(), 125, 940);
+    }
+}
