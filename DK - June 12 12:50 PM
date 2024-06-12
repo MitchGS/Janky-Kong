@@ -1,0 +1,47 @@
+import greenfoot.*;
+
+public class DK extends Actor {
+    long lastTime;
+    int intervalMin = 1000;
+    int intervalMax = 4000;
+    private GreenfootImage defaultImage;
+    private GreenfootImage invertedImage;
+    private boolean isImageInverted;
+
+    public DK() {
+        defaultImage = getImage();
+        invertedImage = new GreenfootImage(defaultImage);
+        invertedImage.mirrorHorizontally();
+        isImageInverted = false;
+    }
+
+    public void act() {
+        if(!(getY()<990)){
+        getWorld().removeObject(this);
+    }
+        setLocation( getX()+BackGround1.backgroundXSpeed, getY() +BackGround1.backgroundYSpeed);  
+        if (isTouching(Mario.class)) {
+            Greenfoot.setWorld(new Finish());
+            Greenfoot.stop();
+        }
+
+        if (System.currentTimeMillis() - lastTime > getRandomInterval()) {
+            lastTime = System.currentTimeMillis();
+            getWorld().addObject(new Barrel(), getX(), getY());
+            invertImage();
+        }
+    }
+
+    private int getRandomInterval() {
+        return intervalMin + Greenfoot.getRandomNumber(intervalMax - intervalMin + 1000000);
+    }
+
+    private void invertImage() {
+        if (isImageInverted) {
+            setImage(defaultImage);
+        } else {
+            setImage(invertedImage);
+        }
+        isImageInverted = !isImageInverted;
+    }
+}
