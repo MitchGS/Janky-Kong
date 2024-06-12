@@ -1,0 +1,48 @@
+import greenfoot.*;
+
+public class BackGround1 extends World
+{
+    public static int backgroundY = 0;
+    public static int backgroundX = 0;
+
+    private Mario mario;
+    private Hammer hammer;
+
+    public BackGround1()
+    {    
+        super(1500, 1000, 1); 
+
+        mario = new Mario();
+        addObject(mario, 125, 940);
+
+        hammer = new Hammer();
+        addObject(hammer, mario.getX() + 50, mario.getY());
+
+        addObject(new DK(), 200, 150);
+        addObject(new Ladder(), 634, 886);
+
+        int[] floor1Y = {219, 781};
+        int[] floor2Y = {500, 989};
+
+        for (int y : floor1Y) {
+            for (int x = 125; x <= 875; x += 250) {
+                addObject(new Floor(), x, y);
+            }
+        }
+
+        for (int y : floor2Y) {
+            for (int x = 625; x <= 1375; x += 250) {
+                addObject(new Floor2(), x, y);
+            }
+        }
+
+        addObject(new Floor2(), 125, 989);
+        addObject(new Floor2(), 250, 989);
+        addObject(new Floor2(), 375, 989);
+    }
+
+    public void act()
+    {
+        hammer.setLocation(mario.getX() + 50, mario.getY());
+    }
+}
