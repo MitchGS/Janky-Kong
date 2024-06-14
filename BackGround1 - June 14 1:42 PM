@@ -1,0 +1,77 @@
+import greenfoot.*;
+
+public class BackGround1 extends World {
+    public static int backgroundYSpeed = 0;
+    public static int backgroundXSpeed = 0;
+    public static int backgroundXPos = 0;
+    public static boolean gameStarted = false;
+    public static boolean objectsConstructed = false;
+    private Mario mario = new Mario();
+    private Hammer hammer;
+    private int prevMarioX;
+
+    public void act() {
+        
+            
+            if (gameStarted) {
+                if(objectsConstructed){
+                   int marioX = mario.getX();
+            int marioY = mario.getY();
+
+            if (marioX < prevMarioX) {
+                hammer.setLocation(marioX - 80, marioY);
+            } else {
+                hammer.setLocation(marioX + 80, marioY);
+            }
+
+            prevMarioX = marioX; 
+                }else{
+                    mario = new Mario();
+                    int[] floor1Y = {219, 781};
+        int[] floor2Y = {500, 989};
+
+        addFloor1s(floor1Y, 125, 875);
+        addFloor2s(floor2Y, 625, 1375);
+
+        
+        addObject(mario, 125, 940);
+        hammer = new Hammer();
+        addObject(hammer, mario.getX() + 50, mario.getY());
+        prevMarioX = mario.getX();
+        addObject(new DK(), 200, 150);
+        addObject(new Ladder(), 634, 886);
+        addObject(new Floor2(), 125, 989);
+        addObject(new Floor2(), 250, 989);
+        addObject(new Floor2(), 375, 989);
+        objectsConstructed = true;
+                }
+            
+        }
+        
+        
+    }
+
+    public BackGround1() {
+        super(1500, 1000, 1);
+        gameStarted = false;
+        objectsConstructed = false;
+
+        addObject(new Title(), 800, 450);
+    }
+        
+    public void addFloor1s(int[] yCoords, int startX, int endX) {
+        for (int y : yCoords) {
+            for (int x = startX; x <= endX; x += 250) {
+                addObject(new Floor(), x, y);
+            }
+        }
+    }
+
+    public void addFloor2s(int[] yCoords, int startX, int endX) {
+        for (int y : yCoords) {
+            for (int x = startX; x <= endX; x += 250) {
+                addObject(new Floor2(), x, y);
+            }
+        }
+    }
+}
