@@ -1,0 +1,139 @@
+import greenfoot.*;
+
+public class Mario extends Actor {
+    public static void moveBackgroundDown() {
+        BackGround1.backgroundYSpeed = -ySpeed;
+    }
+    public static void moveBackgroundLeft() {
+        BackGround1.backgroundXSpeed = -5;
+        BackGround1.backgroundXPos +=5;
+    }
+    public static void moveBackgroundRight() {
+        BackGround1.backgroundXSpeed = 5;
+        BackGround1.backgroundXPos -=5;
+    }
+
+    static int ySpeed;
+    String Marioimage = "mariopixelCopy.png";
+    long lastTime;
+    int Lives = 3;
+    int score = 0;
+
+    public void act() {
+        BackGround1.backgroundYSpeed = 0;
+        BackGround1.backgroundXSpeed = 0;
+        ySpeed += 1;
+        // Updates y position
+        if (getY() > 500 || ySpeed == Math.abs(ySpeed)) {
+            setLocation(getX(), getY() + ySpeed);
+        } else {
+            moveBackgroundDown();
+        }
+
+        // Display lives and score
+        getWorld().showText("Lives: " + Lives, 1000, 470);
+        getWorld().showText("Score: " + score, 1000, 500);
+
+        // Update score based on time alive
+        score += 1; // Increase score by 1 for every act() call (adjust as needed)
+
+
+        if(isTouching(Barrel.class) || getY() > 990)
+        {
+            removeTouching(Barrel.class);
+            if(Lives < 2 || getY() > 990) // checks if the player would have died on hit.
+        {
+            Lives = 0;
+            getWorld().showText("GAME OVER", 750, 600);
+            Greenfoot.stop();
+        }
+         Lives--; // updates players life
+        }
+        if(BackGround1.backgroundYSpeed!=0&&isTouching(Floor.class)){
+            while(isTouching(Floor.class)){
+                setLocation(getX(), getY() + 1);
+            }
+        }
+        if(ySpeed > 0)
+        {
+            while(isTouching(Floor.class))
+            {
+                ySpeed = 0;
+                setLocation(getX(), getY() - 1);
+                if(Greenfoot.isKeyDown("up")||Greenfoot.isKeyDown("w"))
+                {
+                    ySpeed = - 27;
+
+                }
+                }
+            }
+
+        if(ySpeed <= 0)
+        {
+            while(isTouching(Floor.class))
+            {
+                ySpeed = 0;
+                setLocation(getX(), getY() + 1);
+            }
+        }    
+        if(Greenfoot.isKeyDown("left")||Greenfoot.isKeyDown("a"))
+        {
+            if(getX()>50){
+            move(-5);
+            //This code is to switch sprites when mario walks - incomplete
+            if(System.currentTimeMillis() - lastTime > 500 && Marioimage.equals("mariopixelCopy.png"))
+            {
+                Marioimage = "marioleft.png";
+                setImage("marioleft.png");
+                lastTime = System.currentTimeMillis();
+            }else {
+                if(System.currentTimeMillis() - lastTime > 500)
+                {
+                    Marioimage = "mariopixelCopy.png";
+                    setImage("mariopixelCopy.png");
+                    lastTime = System.currentTimeMillis();
+                }
+            } 
+        }else if(BackGround1.backgroundXPos>125){
+                //moveBackgroundRight();
+            } 
+
+
+            setImage("mariopixelCopy.png");
+            while(isTouching(Floor.class))
+            {
+               move(1);
+            } 
+        } else {
+            if(Greenfoot.isKeyDown("right")||Greenfoot.isKeyDown("d"))
+            {
+                if(getX()<1250){
+               move(5);
+               setImage("mariopixel.png");
+
+                while(isTouching(Floor.class))
+                {
+
+                  move(-1);
+                }
+            }else if(BackGround1.backgroundXPos < 300){
+               // moveBackgroundLeft();
+            }
+            } else{
+                setImage("mario-big.png");
+            }
+        }
+        if(Greenfoot.isKeyDown("down")||Greenfoot.isKeyDown("s"))
+        {
+            ySpeed = 50;
+        } 
+        if (isTouching(Ladder.class)) {
+            if (Greenfoot.isKeyDown("up") || Greenfoot.isKeyDown("w")) {
+                setLocation(getX(), getY() - 2); // Climb up
+            } else if (Greenfoot.isKeyDown("down") || Greenfoot.isKeyDown("s")) {
+                setLocation(getX(), getY() + 2); // Climb down
+            }
+        }
+
+    } 
+}
