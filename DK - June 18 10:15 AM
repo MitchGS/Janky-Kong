@@ -1,0 +1,55 @@
+import greenfoot.*;
+
+public class DK extends Actor {
+    long lastTime; // Variable to store the last time a barrel was thrown
+    int intervalMin = 500; // Minimum interval for throwing barrels
+    int intervalMax = 1000; // Maximum interval for throwing barrels
+    private GreenfootImage defaultImage; // Default image for DK
+    private GreenfootImage invertedImage; // Inverted image for DK
+    private boolean isImageInverted; // Check if the image is inverted
+
+    // Constructor for DK
+    public DK() {
+        defaultImage = getImage(); // Get the current image of DK
+        invertedImage = new GreenfootImage(defaultImage); // Create a copy of the default image
+        invertedImage.mirrorHorizontally(); // Invert the image horizontally
+        isImageInverted = false; // Initialize isImageInverted
+    }
+
+    // The act method is called repeatedly 
+    public void act() {
+        // Move DK based on the background's speed
+        setLocation(getX() + BackGround1.backgroundXSpeed, getY() + BackGround1.backgroundYSpeed);
+
+        // Remove DK from the world if it reaches a certain Y position
+        if (getY() >= 990) {
+            getWorld().removeObject(this);
+        } else if (isTouching(Mario.class)) {
+            // If DK touches Mario change the world to the Finish world and stop the game
+            Greenfoot.setWorld(new Finish());
+            Greenfoot.stop();
+        } else if (System.currentTimeMillis() - lastTime > getRandomInterval()) {
+            // If the current time minus the last time is greater than a random interval throw a barrel
+            lastTime = System.currentTimeMillis(); // Update the last time
+            getWorld().addObject(new Barrel(), getX(), getY()); // Add a new barrel to the world
+            invertImage(); // Invert DK's image
+        }
+    }
+
+    // Method to get a random interval for throwing barrels
+    public int getRandomInterval() {
+        // Return a random number
+        return intervalMin + Greenfoot.getRandomNumber(intervalMax - intervalMin + 1000000);
+    }
+
+    // Method to invert DK's image
+    public void invertImage() {
+        // If the image is inverted, set it to default otherwise set it to inverted
+        if (isImageInverted) {
+            setImage(defaultImage);
+        } else {
+            setImage(invertedImage);
+        }
+        isImageInverted = !isImageInverted; // Toggle isImageInverted
+    }
+}
